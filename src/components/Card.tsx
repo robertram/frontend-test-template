@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Card({ game }: { game: Game }) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 flex flex-col">
+    <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 flex flex-col w-[380px]">
       {/* Game Cover Art */}
       <div className="relative w-full aspect-[3/4] h-[240px] rounded-t-lg overflow-hidden">
         <Image

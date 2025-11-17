@@ -20,12 +20,13 @@ export async function GET(request: Request) {
   // Mock a delay to simulate a real API
   await delay(2000);
 
+  // Calculate total pages based on filtered games
+  const totalPages = Math.ceil(games.length / ITEMS_PER_PAGE);
+  const currentPage = page;
+
   const fromIndex = (page - 1) * ITEMS_PER_PAGE;
   const toIndex = page * ITEMS_PER_PAGE;
   games = games.slice(fromIndex, toIndex);
-
-  const totalPages = Math.ceil(allGames.length / ITEMS_PER_PAGE);
-  const currentPage = page;
 
   return Response.json({ games, availableFilters, totalPages, currentPage });
 }
