@@ -1,17 +1,37 @@
 'use client';
 import { Game } from "@/utils/endpoint";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { getCart } from "@/utils/cart";
 
-export default function Card({ game, handleAddToCart }: { game: Game, handleAddToCart: (game: Game) => void }) {
-  const [showAddedMessage, setShowAddedMessage] = useState(false);
+export default function Card({ game, handleAddToCart, handleRemoveFromCart }: { game: Game, handleAddToCart: (game: Game) => void, handleRemoveFromCart: (gameId: string) => void }) {
+  const [isInCart, setIsInCart] = useState(false);
+
+  const checkCartStatus = useCallback(() => {
+    const cart = getCart();
+    setIsInCart(cart.some((item: Game) => item.id === game.id));
+  }, [game.id]);
+
+  useEffect(() => {
+    checkCartStatus();
+    // Listen for cart updates (same tab)
+    window.addEventListener('cartUpdated', checkCartStatus);
+    // Listen for storage changes to update cart status across tabs
+    window.addEventListener('storage', checkCartStatus);
+    
+    return () => {
+      window.removeEventListener('cartUpdated', checkCartStatus);
+      window.removeEventListener('storage', checkCartStatus);
+    };
+  }, [game.id, checkCartStatus]);
 
   const handleClick = () => {
-    handleAddToCart(game);
-    setShowAddedMessage(true);
-    setTimeout(() => {
-      setShowAddedMessage(false);
-    }, 2000);
+    if (isInCart) {
+      handleRemoveFromCart(game.id);
+    } else {
+      handleAddToCart(game);
+    }
+    checkCartStatus();
   };
 
   return (
@@ -43,13 +63,8 @@ export default function Card({ game, handleAddToCart }: { game: Game, handleAddT
       </div>
 
       <div className="px-4 pb-4 relative">
-        {showAddedMessage && (
-          <div className="mb-2 text-center text-green-600 font-semibold text-sm">
-            Added to cart
-          </div>
-        )}
         <button onClick={handleClick} className="cursor-pointer w-full py-3 px-4 bg-white border border-gray-600 rounded-md font-bold text-sm text-gray-800 uppercase tracking-wide hover:bg-gray-50 transition-colors">
-          ADD TO CART
+          {isInCart ? 'REMOVE' : 'ADD TO CART'}
         </button>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Card from "./Card";
 import GenreFilter from "./GenreFilter";
 import Button from "./Button";
-import { addToCart } from "@/utils/cart";
+import { addToCart, removeFromCart } from "@/utils/cart";
 
 export default function GamesCatalog() {
   const searchParams = useSearchParams();
@@ -16,30 +16,30 @@ export default function GamesCatalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const previousGenreRef = useRef<string | null>(null);
-  
+
   useEffect(() => {
     setLoading(true);
     setError(null);
-    
+
     // Build query string from URL params
     const genre = searchParams.get('genre');
     const page = searchParams.get('page') || '1';
     const pageNum = parseInt(page);
-    
+
     // If genre changed, reset games list
     const genreChanged = previousGenreRef.current !== genre;
     if (genreChanged) {
       setGames([]);
       previousGenreRef.current = genre;
     }
-    
+
     const params = new URLSearchParams();
     if (genre) params.set('genre', genre);
     params.set('page', page);
-    
+
     fetch(`/api/games?${params.toString()}`)
       .then((response) => response.json())
-      .then((data) => { 
+      .then((data) => {
         // If loading page 1 or genre changed, replace games. Otherwise append.
         if (pageNum === 1 || genreChanged) {
           setGames(data.games);
@@ -58,13 +58,18 @@ export default function GamesCatalog() {
     const nextPage = currentPage + 1;
     const params = new URLSearchParams(searchParams.toString());
     params.set('page', nextPage.toString());
-    
+
     router.push(`/?${params.toString()}`);
   };
 
   const handleAddToCart = (game: Game) => {
     console.log('Adding to cart:', game);
     addToCart(game);
+  };
+
+  const handleRemoveFromCart = (gameId: string) => {
+    console.log('Removing from cart:', gameId);
+    removeFromCart(gameId);
   };
 
   const hasMorePages = currentPage < totalPages;
@@ -83,18 +88,18 @@ export default function GamesCatalog() {
       {!loading && games.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {games.map((game) => (
-            <Card key={game.id} game={game} handleAddToCart={handleAddToCart} />
-          ))} 
+            <Card key={game.id} game={game} handleAddToCart={handleAddToCart} handleRemoveFromCart={handleRemoveFromCart} />
+          ))}
         </div>
       )}
       {hasMorePages && (
-          <Button 
-            onClick={handleSeeMore} 
-            disabled={loading}
-            className="mt-6"
-          >
-            SEE MORE
-          </Button>
+        <Button
+          onClick={handleSeeMore}
+          disabled={loading}
+          className="mt-6"
+        >
+          SEE MORE
+        </Button>
       )}
     </div>
   );
