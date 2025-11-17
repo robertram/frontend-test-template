@@ -10,9 +10,10 @@ export default function Header() {
             <h1 className="text-2xl font-bold text-[#585660]">GameShop</h1>
           </Link>
 
-          <button
-            // onClick={() => { }}
-            className="relative p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer">
+          <Link
+            href="/cart"
+            className="relative p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+          >
             <Image
               src="/cart.png"
               alt="Shopping cart"
@@ -20,7 +21,7 @@ export default function Header() {
               height={24}
               className="object-contain"
             />
-          </button>
+          </Link>
         </div>
       </div>
     </header>
