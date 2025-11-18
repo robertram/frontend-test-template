@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Game } from '@/utils/endpoint';
 import Button from './Button';
+import CartItem from './CartItem';
 import { removeFromCart, getCart } from '@/utils/cart';
 
   export default function YourCart() {
@@ -66,60 +66,13 @@ import { removeFromCart, getCart } from '@/utils/cart';
               </Link>
             </div>
           ) : (
-            <div className="space-y-6">
-              {cartItems.map((game) => (
-                <div 
-                  key={game.id} 
-                  className="flex gap-4 items-start bg-white rounded-lg p-4 border border-gray-200"
-                >
-                  <div className="relative w-24 h-32 flex-shrink-0 rounded-md overflow-hidden">
-                    <Image
-                      src={game.image}
-                      alt={game.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">
-                      {game.genre}
-                    </p>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{game.name}</h3>
-                    {game.description && (
-                      <p className="text-sm text-gray-600 mb-2">{game.description}</p>
-                    )}
-                    {game.isNew && (
-                      <span className="inline-block bg-black text-white text-xs font-bold px-2 py-1 rounded mb-2">
-                        New
-                      </span>
-                    )}
-                    <p className="text-lg font-bold text-gray-900 mt-2">
-                      ${game.price.toFixed(2)}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => handleRemoveFromCart(game.id)}
-                    className="cursor-pointer flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
-                    aria-label="Remove item"
-                  >
-                    <svg 
-                      width="20" 
-                      height="20" 
-                      viewBox="0 0 20 20" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path 
-                        d="M15 5L5 15M5 5L15 15" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
+            <div className="space-y-0">
+              {cartItems.map((game, index) => (
+                <div key={game.id} className={index < cartItems.length - 1 ? "border-b border-gray-200 pb-6 mb-6" : ""}>
+                  <CartItem
+                    game={game}
+                    onRemove={handleRemoveFromCart}
+                  />
                 </div>
               ))}
             </div>

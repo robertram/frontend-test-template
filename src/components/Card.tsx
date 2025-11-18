@@ -35,14 +35,15 @@ export default function Card({ game, handleAddToCart, handleRemoveFromCart }: { 
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 flex flex-col w-[380px]">
-      <div className="relative w-full aspect-[3/4] h-[240px] rounded-t-lg overflow-hidden">
-        {game.isNew && <div className="absolute top-6 left-6 bg-white text-black px-4 py-2 rounded-md text-sm z-10">New</div>}
+    <div className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 flex flex-col w-full">
+      <div className="relative w-full aspect-[3/4] rounded-t-lg overflow-hidden h-[240px]">
+        {game.isNew && <div className="absolute top-6 left-6 bg-white text-black px-4 py-2 rounded-md text-sm z-10 ">New</div>}
+        
         <Image
           src={game.image}
           alt={game.name}
           fill
-          className="object-cover p-4"
+          className="object-cover p-4 h-[200px]"
         />
       </div>
 
