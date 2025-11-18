@@ -1,6 +1,7 @@
 'use client';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { fetchGenres } from '@/services/gamesService';
 
 export default function GenreFilter() {
   const searchParams = useSearchParams();
@@ -11,10 +12,9 @@ export default function GenreFilter() {
   const selectedGenre = searchParams.get('genre') || '';
 
   useEffect(() => {
-    fetch('/api/games')
-      .then((response) => response.json())
-      .then((data) => {
-        setAvailableGenres(data.availableFilters || []);
+    fetchGenres()
+      .then((genres) => {
+        setAvailableGenres(genres);
         setLoading(false);
       })
       .catch((error) => {
@@ -41,7 +41,9 @@ export default function GenreFilter() {
   if (loading) {
     return (
       <div>
-        <select disabled className="px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500">
+        <select disabled 
+        className="px-4 py-2 border border-white rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+        >
           <option>Loading genres...</option>
         </select>
       </div>

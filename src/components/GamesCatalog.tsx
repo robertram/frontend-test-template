@@ -6,6 +6,7 @@ import Card from "./Card";
 import GenreFilter from "./GenreFilter";
 import Button from "./Button";
 import { addToCart, removeFromCart } from "@/utils/cart";
+import { fetchGames } from "@/services/gamesService";
 
 export default function GamesCatalog() {
   const searchParams = useSearchParams();
@@ -21,7 +22,6 @@ export default function GamesCatalog() {
     setLoading(true);
     setError(null);
 
-    // Build query string from URL params
     const genre = searchParams.get('genre');
     const page = searchParams.get('page') || '1';
     const pageNum = parseInt(page);
@@ -33,12 +33,7 @@ export default function GamesCatalog() {
       previousGenreRef.current = genre;
     }
 
-    const params = new URLSearchParams();
-    if (genre) params.set('genre', genre);
-    params.set('page', page);
-
-    fetch(`/api/games?${params.toString()}`)
-      .then((response) => response.json())
+    fetchGames({ genre, page })
       .then((data) => {
         // If loading page 1 or genre changed, replace games. Otherwise append.
         if (pageNum === 1 || genreChanged) {
