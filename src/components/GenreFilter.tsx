@@ -50,7 +50,7 @@ export default function GenreFilter() {
 
   return (
     <div className='flex items-center gap-2'>
-      <p className='border-r-[1px] pr-5'>
+      <p className='border-r-[1px] pr-5 text-base font-bold'>
         Genre
       </p>
 

@@ -98,8 +98,8 @@ import { removeFromCart, getCart } from '@/utils/cart';
             <div className="border-t border-gray-300 my-4"></div>
 
             <div className="flex justify-between items-center mb-6">
-              <span className="text-lg font-bold text-gray-900">Order Total</span>
-              <span className="text-lg font-bold text-gray-900">
+              <span className="text-lg font-bold text-[#3B3B3B]">Order Total</span>
+              <span className="text-lg font-bold text-[#3B3B3B]">
                 ${orderTotal.toFixed(2)}
               </span>
             </div>

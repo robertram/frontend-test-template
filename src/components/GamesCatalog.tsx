@@ -75,8 +75,8 @@ export default function GamesCatalog() {
   const hasMorePages = currentPage < totalPages;
 
   return (
-    <div className="w-full">
-      <p className="">Top Sellers</p>
+    <div className="w-full mt-[50px]">
+      <p className="text-2xl font-bold ">Top Sellers</p>
       <div className="flex justify-end mb-6">
         <GenreFilter />
       </div>

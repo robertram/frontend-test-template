@@ -12,7 +12,7 @@ export default function CartItem({ game, onRemove }: CartItemProps) {
     <div 
       className="flex gap-4 items-start bg-white rounded-lg p-4"
     >
-      <div className="relative w-24 h-32 flex-shrink-0 rounded-md overflow-hidden">
+      <div className="relative w-40 h-32 flex-shrink-0 overflow-hidden">
       {game.isNew && <div className="absolute top-2 left-2 bg-white text-black px-1 py-1 rounded-md text-xs z-10 ">New</div>}
         <Image
           src={game.image}
